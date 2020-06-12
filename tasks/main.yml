@@ -1,0 +1,6 @@
+---
+- name: Install WSL 2 on Windows
+  include_tasks: windows.yml
+  when: >
+    ansible_os_family == 'Windows'
+    or ansible_os_family.startswith('CYGWIN')

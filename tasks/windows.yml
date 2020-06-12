@@ -1,0 +1,28 @@
+# https://docs.microsoft.com/en-us/windows/wsl/install-win10
+
+- name: Install the Windows Subsystem for Linux
+  win_optional_feature:
+    name: Microsoft-Windows-Subsystem-Linux
+  register: wsl2_feature_wsl
+
+- name: Enable the 'Virtual Machine Platform' optional component
+  win_optional_feature:
+    name: VirtualMachinePlatform
+  register: wsl2_feature_vmp
+
+# https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel
+- name: Install the Linux kernel update package
+  win_package:
+    path: https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
+    product_id: "{9F858BB9-156F-4C4C-9295-0A06CA83D17C}"
+  register: wsl2_kernel_update
+
+- name: Set WSL 2 as your default version
+  win_command: wsl --set-default-version 2
+
+- name: "Set Ansible fact: wsl2_reboot_required"
+  set_fact:
+    wsl2_reboot_required: "{{ wsl2_feature_wsl.reboot_required or wsl2_feature_vmp.reboot_required or wsl2_kernel_update.reboot_required }}"
+
+- debug:
+    msg: "{{ 'Reboot required.' if wsl2_reboot_required else 'Reboot not required.' }}"

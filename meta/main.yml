@@ -1,0 +1,20 @@
+galaxy_info:
+  author: bit_kitchen
+  role_name: wsl2
+
+  description: Install WSL 2.
+  license: MIT
+
+  min_ansible_version: 2.9
+
+  # https://galaxy.ansible.com/api/v1/platforms/
+  platforms:
+  - name: Windows
+    versions:
+    - all
+
+  galaxy_tags:
+  - wsl
+  - wsl2
+
+dependencies: []

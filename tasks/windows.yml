@@ -18,9 +18,12 @@
 # https://docs.microsoft.com/en-us/windows/wsl/wsl2-kernel
 - name: Install the Linux kernel update package
   win_package:
-    path: https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
+    path: "{{ wsl2_update_msi }}"
     product_id: "{9F858BB9-156F-4C4C-9295-0A06CA83D17C}"
   register: wsl2_kernel_update
+  when: >
+    ansible_env.PROCESSOR_ARCHITECTURE == "AMD64" or
+    ansible_env.PROCESSOR_ARCHITECTURE == "ARM64"
 
 - name: Set WSL 2 as your default version
   win_command: wsl --set-default-version 2
